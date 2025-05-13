@@ -11,6 +11,7 @@ namespace Product.Core.Interfaces
     {
         // الحصول على جميع الكيانات (نسخة غير قابلة للتعديل)
         Task<IReadOnlyList<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
 
         // الحصول على كيانات مع تضمين علاقات (Eager Loading)
         Task<IReadOnlyList<T>> GetAsync(

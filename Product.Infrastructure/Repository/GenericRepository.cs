@@ -25,6 +25,16 @@ namespace Product.Infrastructure.Repository
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
+        {
+            var query = _context.Set<T>().AsQueryable();
+            foreach (var item in includes)
+            {
+                query = query.Include(item);
+
+            }
+            return await query.ToListAsync();
+        }
 
         public async Task<IReadOnlyList<T>> GetAsync(
             Expression<Func<T, bool>> filter = null,

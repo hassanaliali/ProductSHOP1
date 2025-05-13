@@ -13,6 +13,6 @@ namespace Product.Core.Entities
         public String Description { set; get; }
         public double Price { set; get; }
         public int CategoryId { set; get; }
-        public virtual ICollection<Category> Category { set; get; }
+        public virtual Category category { set; get; }
     }
 }

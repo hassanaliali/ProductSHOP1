@@ -17,6 +17,7 @@ namespace Product.Infrastructure
         public static IServiceCollection InfrastructureConfigration(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddDbContext<ApplicationDbContext>(options =>
