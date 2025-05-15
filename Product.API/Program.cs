@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.Extensions.FileProviders;
 using Product.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.InfrastructureConfigration(builder.Configuration);
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(
+    Directory.GetCurrentDirectory(),"wwwroot"
+    )));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,7 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.MapOpenApi();
-}
+}app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

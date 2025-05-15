@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace Product.Infrastructure.Data.migrationOne
+namespace Product.Infrastructure.Data.migration1452025
 {
     /// <inheritdoc />
-    public partial class ini : Migration
+    public partial class migration1452025 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,54 +33,34 @@ namespace Product.Infrastructure.Data.migrationOne
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryProductEntity",
-                columns: table => new
-                {
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    productsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryProductEntity", x => new { x.CategoryId, x.productsId });
                     table.ForeignKey(
-                        name: "FK_CategoryProductEntity_Categories_CategoryId",
+                        name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryProductEntity_Products_productsId",
-                        column: x => x.productsId,
-                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryProductEntity_productsId",
-                table: "CategoryProductEntity",
-                column: "productsId");
+                name: "IX_Products_CategoryId",
+                table: "Products",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryProductEntity");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }

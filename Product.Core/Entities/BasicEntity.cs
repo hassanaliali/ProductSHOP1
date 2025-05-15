@@ -8,6 +8,6 @@ namespace Product.Core.Entities
 {
     public class BasicEntity
     {
-        
+        public int Id { set; get; }
     }
 }

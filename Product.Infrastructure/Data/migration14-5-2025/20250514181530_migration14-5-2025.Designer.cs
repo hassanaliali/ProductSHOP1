@@ -8,11 +8,11 @@ using Product.Infrastructure.Data;
 
 #nullable disable
 
-namespace Product.Infrastructure.Data.migrationtwo
+namespace Product.Infrastructure.Data.migration1452025
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250512041413_updateGenrecRepo")]
-    partial class updateGenrecRepo
+    [Migration("20250514181530_migration14-5-2025")]
+    partial class migration1452025
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace Product.Infrastructure.Data.migrationtwo
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CategoryProductEntity", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("productsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryId", "productsId");
-
-                    b.HasIndex("productsId");
-
-                    b.ToTable("CategoryProductEntity");
-                });
 
             modelBuilder.Entity("Product.Core.Entities.Category", b =>
                 {
@@ -83,27 +68,34 @@ namespace Product.Infrastructure.Data.migrationtwo
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Photo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("CategoryProductEntity", b =>
+            modelBuilder.Entity("Product.Core.Entities.ProductEntity", b =>
                 {
-                    b.HasOne("Product.Core.Entities.Category", null)
-                        .WithMany()
+                    b.HasOne("Product.Core.Entities.Category", "category")
+                        .WithMany("products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product.Core.Entities.ProductEntity", null)
-                        .WithMany()
-                        .HasForeignKey("productsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("category");
+                });
+
+            modelBuilder.Entity("Product.Core.Entities.Category", b =>
+                {
+                    b.Navigation("products");
                 });
 #pragma warning restore 612, 618
         }

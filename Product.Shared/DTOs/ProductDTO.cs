@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Product.Infrastructure.Data.DTOs
 {
@@ -36,6 +37,7 @@ namespace Product.Infrastructure.Data.DTOs
         [Required]
 
         public int CategoryId { get; set; }
+        public IFormFile image { get; set; }
 
     }
     public class UpdateProductDTO: ProductBasic
